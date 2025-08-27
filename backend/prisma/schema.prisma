@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user{
+  id                String @id @default(uuid()) @unique
+  username          String @unique 
+  password          String 
+  email             String @unique
+  profile_url       String?
+  contry            String?
+  institution       String?
+  dob               DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt 
+  last_visite       DateTime?
+  friends           String[]
+  notification      String[]
+}
+
+model problem{
+  id                Int @id @default(autoincrement()) @unique
+  name              String
+  descreption       String
+  solution_code     String
+  sample_input      String
+  sample_output     String
+  input_testcase    String?
+  output_testcase   String?   
+  isvisible         Boolean @default(true)
+  tutorial          String?
+  problem_setter_id String?
+  difficulty        Int?
+  topic             Problem_topic?
+}
+
+enum Problem_topic{
+  DP 
+  GREDDY
+  MATH
+}
+
+model usersubmission{
+  id                String @id @default(uuid()) @unique
+  problem_id        Int
+  user_id           String
+  user_code         String
+  codelang          Codelang  
+  time              Int?
+  memory            Int?  
+  submission_status Substatus @default(WAITING)
+  submission_time   DateTime @default(now())
+}
+
+enum Substatus{
+  WAITING
+  ACCEPTED
+  NOTACCEPTED
+}
+
+enum Codelang{
+  PYTHON
+  CPP23
+  RUST
+  JAVA
+}
+
+model notaccepted{
+  id String @id @default(uuid()) @unique
+  user_id String
+  problem_id Int
+  title String?
+  testcase Int?
+}
+
+model admin{
+  id String @id @default(uuid()) @unique
+  username String @unique 
+  password String
+}
+
+model contest{
+	id String @unique
+  problems_id Int[] 
+  admins_id String[]
+  register_users_id String[]
+  time_to_start DateTime
+  duration Int    // miniutes
+  contestComment contestComment[]
+}
+
+model contestComment{
+  id String @id @default(uuid()) @unique
+  user_id String
+  data String
+  contest_id String
+  contest contest @relation(fields: [contest_id] , references: [id])
+}
+
+model blog{
+  id String @id @default(uuid()) @unique
+  user_id String
+  description String
+  blogComment blogComment[]
+}
+
+model blogComment{
+  id String @id @default(uuid()) @unique
+  user_id String
+  data String
+  blog_id String
+  blog blog @relation(fields: [blog_id] , references: [id])
+}
