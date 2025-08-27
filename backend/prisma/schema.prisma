@@ -78,48 +78,48 @@ enum Codelang{
 }
 
 model notaccepted{
-  id String @id @default(uuid()) @unique
-  user_id String
-  problem_id Int
-  title String?
-  testcase Int?
+  id               String @id @default(uuid()) @unique
+  user_id          String
+  problem_id       Int
+  title            String?
+  testcase         Int?
 }
 
 model admin{
-  id String @id @default(uuid()) @unique
-  username String @unique 
-  password String
+  id               String @id @default(uuid()) @unique
+  username         String @unique 
+  password         String
 }
 
 model contest{
-	id String @unique
-  problems_id Int[] 
-  admins_id String[]
+	id                String @unique
+  problems_id       Int[] 
+  admins_id         String[]
   register_users_id String[]
-  time_to_start DateTime
-  duration Int    // miniutes
-  contestComment contestComment[]
+  time_to_start     DateTime
+  duration          Int    // miniutes
+  contestComment    contestComment[]
 }
 
 model contestComment{
-  id String @id @default(uuid()) @unique
-  user_id String
-  data String
-  contest_id String
-  contest contest @relation(fields: [contest_id] , references: [id])
+  id                String @id @default(uuid()) @unique
+  user_id           String
+  data              String
+  contest_id        String
+  contest           contest @relation(fields: [contest_id] , references: [id])
 }
 
 model blog{
-  id String @id @default(uuid()) @unique
-  user_id String
-  description String
-  blogComment blogComment[]
+  id                String @id @default(uuid()) @unique
+  user_id           String
+  description       String
+  blogComment       blogComment[]
 }
 
 model blogComment{
-  id String @id @default(uuid()) @unique
-  user_id String
-  data String
-  blog_id String
-  blog blog @relation(fields: [blog_id] , references: [id])
+  id                String @id @default(uuid()) @unique
+  user_id           String
+  data              String
+  blog_id           String
+  blog              blog @relation(fields: [blog_id] , references: [id])
 }
